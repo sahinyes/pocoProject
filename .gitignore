@@ -1,0 +1,13 @@
+.env
+.flaskenv
+env/
+venv/
+.venv/
+env*
+dist/
+build/
+.cache/
+.vscode
+__pycache__/
+history/
+sheets.py

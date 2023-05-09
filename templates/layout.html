@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- App title -->
+    <title>Portfolio</title>
+    
+    <!-- Link CSS file -->
+    <link href="/static/styles.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- https://favicon.io/emoji-favicons/money-bag/ -->
+    <link href="/static/favicon.ico" rel="icon">
+    
+    <title>Portfolio {% block title %}{% endblock %}</title>
+</head>
+
+<body>       
+    <header class="header">
+        <!-- Logo -->
+        <a href="index.html" class="logo">sahinyes</a>
+        <!-- Hamburger icon -->
+        <input class="side-menu" type="checkbox" id="side-menu"/>
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <!-- Menu -->
+        <nav class="nav">
+            <ul class="menu">
+                <li><a href="https://sahinyes.com">home</a></li>
+                <li><a href="https://blog.sahinyes.com">blog</a></li>
+                <li><a href="/project">project</a> </li>
+                <li><a href="https://sahinyes.com/infra">infra</a></li>
+            </ul>
+        </nav>
+        <!-- {% if session["user_id"] %}
+            <nav class="second">
+            <ul class="menu2">
+                <li><a href=""></a>link</li>
+                <li><a href=""></a>link</li>
+                <li><a href=""></a>link</li>
+            </ul>
+        </nav>
+        {% endif %} -->
+    </header>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+    
+    <footer class="copyright">
+        &copy; 2023 sahinyes
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

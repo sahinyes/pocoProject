@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    index
+{% endblock %}
+
+{% block main %}
+
+{{ domain }}
+<!-- 
+<div class="scanbody">
+    <form action="/vulnscan" method="POST" id="vulnform">
+        <input type="hidden" id="vulnid" name="value" value={{ domain }}>
+        <button type="submit" class="scanButton">Scanner</button>
+    </form> -->
+
+
+    <button id="vulnbutton" value={{ domain }} >Vuln Scanner</button>
+    <button id="dirbutton" value={{ domain }} >Directory Scanner</button>
+
+    <form action="/dirscan" method="POST" id="dirform">
+        <input type="hidden" id="vulnid" name="value" value={{ domain }}>       
+    </form>
+</div>
+
+
+
+{% endblock %}
+
