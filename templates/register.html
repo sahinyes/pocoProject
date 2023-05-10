@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    index
+{% endblock %}
+
+{% block main %}
+<h1>Hello from Project</h1>
+
+
+<form action="/register" method="POST">
+    <label for="username"></label>
+    <input type="text" name="username" placeholder="Username" autofocus autocomplete="off">
+    <label for="password"></label>
+    <input type="password" name="password" placeholder="password">
+    <label for="confirm"></label>
+    <input type="password" name="confirm" placeholder="confirmation">
+    <button type="submit">Register</button>
+</form>
+
+
+{% endblock %}

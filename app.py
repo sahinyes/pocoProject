@@ -2,15 +2,13 @@ import subprocess, json, pdb
 from flask import Flask, redirect, jsonify, flash, render_template, request, session, Response, stream_with_context
 from flask_session import Session
 import boto3
+from botocore.exceptions import ClientError
 from helpers import *
-# from flask_socketio import SocketIO, emit
-
+from werkzeug.security import check_password_hash, generate_password_hash
 # Configure applicaiton
 app = Flask(__name__)
 
 #! TAKE CONFIGS FROM CLI
-#! DONT FORGET CHANGE ME
-app.debug = True
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -20,9 +18,9 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
-
 # DB WILL COME HERE
-
+dynamodb = boto3.resource('dynamodb', region_name='eu-central-2')
+table = dynamodb.Table('users')
 
 # @app.after_request
 # def after_request(response):
@@ -37,24 +35,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 def index():
     return render_template("index.html")
 
-@app.route("/project", methods=["GET", "POST"])
+@app.route("/project", methods=["GET"])
 def project():
     return render_template("project.html")
-
-    #! DONT FORGET INPUT SANITIZE
-    #! Shell=False
-    
-    # #if request.method == "POST":
-    #     #domain = request.form.get("inputdomain")
-    #     #result = subprocess.check_output(['./recon.sh', domain]).decode('utf-8')
-    #     # data = json.loads(result)
-    #     # pdb.set_trace()
-    #     # data = json.loads(data)
-
-    #     return render_template("project.html")
-
-    # elif request.method == "GET":
-    #     return render_template("project.html")
 
 
 @app.route("/register", methods=["GET","POST"])
@@ -78,21 +61,26 @@ def register():
             return apology("Please enter both passwords")
         elif password != confirm:
             return apology("Passwords dosent match")
-        
-        username = sanitize(username)
-        password = sanitize(password)
-        confirm = sanitize(confirm)
-
-        # json_data = open(url)
-        result = f"{username} {password} {confirm}"
-        # Then create here user account after mongo db
-
-        return render_template("project.html", result=result)
+        elif password == confirm:
+            try:
+                # table = dynamodb.Table('users')
+                table.put_item(
+                    Item={
+                        'username': {'S': username},
+                        'password': {'S': password}
+                    }
+                    )
+                msg = "congrats"
+                return render_template("login.html", msg=msg)
+            except:
+                return apology("Username already exists")
+        else:
+            return apology("Passwords dosent match")
     
     elif request.method == "GET":
         return render_template("project.html")
 
-    return render_template("project.html", result=result)
+    return render_template("project.html")
 
 
 @app.route("/login", methods=["GET","POST"])
@@ -101,14 +89,35 @@ def login():
 
     if request.method == "POST":
 
-        if not request.form.get("username"):
-            return apology("Must provide username", 403)
-        elif not request.form.get("password"):
-            return apology("Must provide password", 403)
+        username = request.form['username']
+        password = request.form['password']
         
-        #Then send data to DB
+        # table = dynamodb.Table('users')
+        response = table.query(
+                KeyConditionExpression=Key('email').eq(username)
+        )
+        items = response['Items']
+        name = items[0]['name']
+        print(items[0]['password'])
+        if password == items[0]['password']:
+            
+            return render_template("dashboard.html")
+    return render_template("login.html")
+
+                
 
 
+        #! Sanitize inputs here also for dynamodb
+        
+
+
+
+@app.route("/dashboard", methods=["GET","POST"])
+def dashboard():
+    return render_template("dashboard.html")
+
+
+#! Dont forget 'crt.py = none' issue
 @app.route("/recon",methods=["GET","POST"])
 def recon():
 
@@ -117,6 +126,7 @@ def recon():
         domain = request.form.get("domain")
         
         if domainCheck(domain) != False:
+
 
             try:
                 domain = domainCheck(domain)

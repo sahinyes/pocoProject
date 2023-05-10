@@ -14,18 +14,15 @@
 # Take input and sanitize #! w\Python
 domain=$1
 
-#? export FLASK_DEBUG=1
 
 #Create file if its doesnt exist
 #! else return logged folder 
- [ ! -d $domain ] && mkdir history/$domain 2>/dev/null
-
-# Leak check & git leak #! w\Python
-#https://github.com/IntelligenceX/SDK/tree/master/Python
+[ ! -d $domain ] && mkdir history/$domain 2>/dev/null
 
 # Search subdomains #! it must overwrite 
 
-python3 crt.py $domain | jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
+#! if its false return again 
+python3 crt.py $domain && jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
 #subfinder -silent -d $domain > history/$domain/subdomains.txt  
 
 # Request and response subdomains 
