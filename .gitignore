@@ -12,3 +12,4 @@ __pycache__/
 history/
 sheets.py
 config/*
+config.py

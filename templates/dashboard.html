@@ -6,31 +6,15 @@
 
 {% block main %}
 
-<table class="subTable" border="1">
-    <thead>
-        <tr>
-            <th>action</th>
-            {% for col in output[0].keys() %}
-            <th>{{ col }}</th>
-            {% endfor %}
-        </tr>
-    </thead>    
+{{ data }}
+<h1>recon</h1>
 
-    {% for row in output %}
-    <tr>
-        <td>
-            <form action="/scan" method="POST">
-                <input type="hidden" name="value" value={{ row.url }}>
-                <button type="submit" class="scanButton">scan</button>
-            </form>
-        </td>
-        {% for value in row.values() %}
-        <td>{{ value }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-    <tbody>  
-    </tbody>
-</table>
+<form action="/recon" method="POST">
+    <label for="domain"></label>
+    <input type="text" name="domain" placeholder="domain">
+    <button type="submit"> Submit</button>
+</form>
+
+
 
 {% endblock %}

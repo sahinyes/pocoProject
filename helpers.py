@@ -1,10 +1,11 @@
-import os
 import bleach
-from flask import redirect, render_template, request, session, jsonify, stream_with_context, Response
+from flask import redirect, render_template, request, jsonify, session, stream_with_context, Response
 import subprocess,json
 import re
 from crtsh import crtshAPI
-from flask_socketio import SocketIO, emit
+
+
+
 
 
 # Apology to user
@@ -16,7 +17,6 @@ def apology(message, code=400):
             s = s.replace(old, new)
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
-
 
 # Sanitize input
 def sanitize(param):
@@ -31,6 +31,7 @@ def domainCheck(param):
     else:
         return False
     
+
 def urlCheck(param):
     if re.match('^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$',param):
         return param
