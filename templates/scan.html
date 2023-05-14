@@ -6,22 +6,23 @@
 
 {% block main %}
 
-{{ domain }}
-<!-- 
 <div class="scanbody">
-    <form action="/vulnscan" method="POST" id="vulnform">
-        <input type="hidden" id="vulnid" name="value" value={{ domain }}>
-        <button type="submit" class="scanButton">Scanner</button>
-    </form> -->
-
-
-    <button id="vulnbutton" value={{ domain }} >Vuln Scanner</button>
-    <button id="dirbutton" value={{ domain }} >Directory Scanner</button>
-
-    <form action="/dirscan" method="POST" id="dirform">
-        <input type="hidden" id="vulnid" name="value" value={{ domain }}>       
-    </form>
-</div>
+  <h3>{{ domain }}</h3> 
+    <div class="scanbuttons">
+      <ul class="scanbutton-ul">
+        <li><a><i id="icon" class="fa fa-flag fa-2x" aria-hidden="true"></i></a><button id="vulnbutton" value={{ domain }} >Vulnerability <br> Scan</button> </li>
+        <li><a><i id="icon" class="fa fa-sitemap fa-2x" aria-hidden="true"></i></a><button id="dirbutton" value={{ domain }}>Directory <br> Scan</button> </li>
+        <li><a><i id="icon" class="fa fa-eye fa-2x" aria-hidden="true"></i></a><button id="portbutton" value={{ domain }}>Port <br> Scan</button> </li>
+      </ul>
+    </div>
+  </div>
+    
+<!-- 
+<ul id="scanbar" >
+    <li><button>Vulnerability Scanner</button></li>
+    <li><button>Directory Scanner</button></li>
+    <li><button>Port Scanner</button></li>
+</ul> -->
 
 
 

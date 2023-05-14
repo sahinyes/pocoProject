@@ -51,3 +51,20 @@ $(document).ready(function() {
 
     },);
 });
+
+
+const fadeBtn = document.querySelector('#fade-btn');
+const fadeOutEl = document.querySelector('.fade-out');
+
+fadeBtn.addEventListener('click', () => {
+  fadeOutEl.style.display = 'block'; // show the fade-out element
+  fadeOutEl.classList.add('fade-out-active'); // add the fade-out-active class to trigger the animation
+});
+
+
+
+
+
+
+
+

@@ -7,14 +7,13 @@
 {% block main %}
 
 {{ data }}
-<h1>recon</h1>
 
-<form action="/recon" method="POST">
+<form action="/recon" method="POST" id="dashboard">
+    <h3>Recon Project</h3>
     <label for="domain"></label>
-    <input type="text" name="domain" placeholder="domain">
-    <button type="submit"> Submit</button>
+    <input type="text" name="domain" placeholder="example.com">
+    <button type="submit" id="reconbutton"> Search</button>
 </form>
-
 
 
 {% endblock %}

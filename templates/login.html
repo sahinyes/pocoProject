@@ -5,15 +5,16 @@
 {% endblock %}
 
 {% block main %}
-<h1>Hello from Project</h1>
 
 
-<form action="/login" method="POST">
+<form action="/login" method="POST" id="loginForm">
+    <h1>Login Page</h1>
     <label for="username"></label>
     <input type="text" name="username" placeholder="Username" autofocus autocomplete="off">
     <label for="password"></label>
-    <input type="password" name="password" placeholder="password">
+    <input type="password" name="password" placeholder="Password">
     <button type="submit">Login</button>
+    <button type="button"><a href="/register">Register</a></button>
 </form>
 
 {{ error_message }}

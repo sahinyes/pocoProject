@@ -2,10 +2,6 @@ import bleach
 from flask import redirect, render_template, request, jsonify, session, stream_with_context, Response
 import subprocess,json
 import re
-from crtsh import crtshAPI
-
-
-
 
 
 # Apology to user
@@ -38,7 +34,7 @@ def urlCheck(param):
     else:
         return False
 
-# Getting subdomains via crt
+# Getting subdomains via crt.sh
 def subdomains(domain):
     result = subprocess.check_output(['scripts/recon.sh', domain]).decode('utf-8')
     output = json.loads(result)

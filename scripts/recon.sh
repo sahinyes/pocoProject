@@ -22,9 +22,9 @@ domain=$1
 # Search subdomains #! it must overwrite 
 
 #! if its false return again 
-python3 crt.py $domain && jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
-#subfinder -silent -d $domain > history/$domain/subdomains.txt  
+#python3 scripts/crt.py $domain && jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
+subfinder -silent -d $domain > history/$domain/subdomains.txt  
 
 # Request and response subdomains 
-httpx -l history/$domain/subdomains.txt -silent -tech-detect -ip -json -o history/$domain/httpx.json 1>/dev/null
+httpx -l history/$domain/subdomains.txt -timeout 2 -silent -tech-detect -ip -json -o history/$domain/httpx.json 1>/dev/null
 cat history/$domain/httpx.json | jq '. | {status_code,url,host,port,tech}' | jq --slurp .

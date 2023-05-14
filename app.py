@@ -44,22 +44,6 @@ dynamodb = boto3.resource('dynamodb', region_name='eu-central-2')
 table = dynamodb.Table('bloguser')
 
 
-# # Configure session to use filesystem (instead of signed cookies)
-# app.config["SESSION_TYPE"] = "dynamodb"
-# app.config["SESSION_PERMANENT"] = False
-# app.config['SESSION_USE_SIGNER'] = True
-# app.config['SESSION_DYNAMODB'] = boto3.resource('dynamodb').Table('bloguser')
-# Session(app)
-
-
-# @app.after_request
-# def after_request(response):
-#     """Ensure responses aren't cached"""
-#     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-#     response.headers["Expires"] = 0
-#     response.headers["Pragma"] = "no-cache"
-#     return response
-
 @jwt.unauthorized_loader
 def custom_unauthorized_response(_err):
     return redirect("/login")
@@ -129,6 +113,8 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
+        #! Verify input check error pages
+        
         # table = dynamodb.Table('users')
         result = table.query(
             KeyConditionExpression=Key('username').eq(username)
@@ -184,7 +170,7 @@ def recon():
                 domain = domainCheck(domain)
                 output = subdomains(domain)
                 return render_template("recon.html", output=output)
-            except Exception as e:
+            except:
                 return apology("Invalid domain", 403)
         else:
             return apology("Invalid domain", 403)
@@ -249,6 +235,3 @@ def dirscan():
             else:
                 # 403
                 return apology("Invalid URL", 403)
-
-# if __name__ == '__main__':
-#     app.run(ssl_context=context)
