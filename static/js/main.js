@@ -10,8 +10,8 @@ $(document).ready(function() {
         promptElement.textContent = "Scanning for vulnerabilities " + formData;
         document.body.insertBefore(promptElement, iframe);
 
-
         var iframe = document.createElement('iframe');
+
         iframe.src = "/vulnscan?url=" + formData;
         iframe.id = 'vulnframe';
         iframe.allowFullscreen = true;
@@ -40,6 +40,7 @@ $(document).ready(function() {
 
         // Here creating iframes 
         var iframe = document.createElement('iframe');
+
         iframe.src = "/dirscan?url=" + formData;
         iframe.id = 'vulnframe';
         iframe.allowFullscreen = true;
@@ -53,16 +54,32 @@ $(document).ready(function() {
 });
 
 
-const fadeBtn = document.querySelector('#fade-btn');
-const fadeOutEl = document.querySelector('.fade-out');
 
-fadeBtn.addEventListener('click', () => {
-  fadeOutEl.style.display = 'block'; // show the fade-out element
-  fadeOutEl.classList.add('fade-out-active'); // add the fade-out-active class to trigger the animation
+$(document).ready(function() {
+    $('#ipbutton').click(function(event) {
+        event.preventDefault();  // Prevent the default form submission
+        
+
+        // Prompt-like behavior for the iframe source
+        var formData = $('#ipbutton').val();       
+        var ipbutton = document.getElementById('ipbutton');
+        var promptElement = document.createElement('p');
+        promptElement.textContent = "Scanning directories for " + formData;
+        document.body.insertBefore(promptElement, iframe);
+
+        // Here creating iframes 
+        var iframe = document.createElement('iframe');
+        iframe.src = "/ipscan?url=" + formData;
+        iframe.id = 'vulnframe';
+        iframe.allowFullscreen = true;
+        allowtransparency = true;
+        frameborder = 0;
+        ipbutton.disabled = true;
+        document.body.appendChild(iframe);
+        
+
+    },);
 });
-
-
-
 
 
 

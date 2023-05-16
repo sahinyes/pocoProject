@@ -42,13 +42,14 @@ def subdomains(domain):
 
 
 # Scanning IP's via Shodan
-def ipScan(subdomain):
-    domain = re.search("([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/.*)?$",subdomain).group()
-    result = subprocess.check_output(['scripts/ipscan.sh', domain]).decode('utf-8')
-    output = json.loads(result)
-    return output
+# def ipScan(subdomain):
+#     domain = re.search("([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/.*)?$",subdomain).group()
+#     result = subprocess.check_output(['scripts/ipscan.sh', domain]).decode('utf-8')
+#     output = json.loads(result)
+#     return output
 
-
+# Scannning domain via Nuclei 
+#! It must be CVE template scann
 def vulnscanner(domain):
     cmd = f"scripts/vulnscan.sh {domain}"
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -56,7 +57,7 @@ def vulnscanner(domain):
          #line.rstrip() + b'<br/><\n'
          yield b'<div style="color:white">' + line + b'</div>'
 
-
+# Scanning directories with Katana
 def dirscanner(domain):
     cmd = f"scripts/dirscan.sh {domain}"
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -64,4 +65,13 @@ def dirscanner(domain):
                  
         #line.rstrip() + b'<br/><\n'
         yield b'<div style="color:white">' + line + b'</div>'
-        return(domain)
+        
+
+# Scanning common ports of domain IP's with naabu & nmap
+def ipscanner(domain):
+    cmd = f"scripts/ipscan.sh {domain}"
+    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    for line in iter(process.stdout.readline, b''):
+                 
+        #line.rstrip() + b'<br/><\n'
+        yield b'<div style="color:white">' + line + b'</div>'

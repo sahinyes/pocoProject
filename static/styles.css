@@ -475,7 +475,6 @@ p {
     cursor: pointer;
 }
 
-
 #scanframe {
     display: flex;
     justify-content: center;
@@ -499,6 +498,14 @@ p {
     height: 400px;
     background-color: black;
 
+}
+
+#ipframe {
+    margin: auto;
+    display: flex;
+    width: 800px;
+    height: 400px;
+    background-color: black;
 }
 
 .scanbuttons {

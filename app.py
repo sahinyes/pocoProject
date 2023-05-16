@@ -9,11 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import config
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, set_access_cookies
 from datetime import timedelta
-# import ssl
 
-
-# context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-# context.load_cert_chain('cert.pem', 'key.pem')
 
 
 # Configure applicaiton
@@ -26,6 +22,7 @@ app.secret_key = 'your-secret-key'
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 # app.config['SECRET_KEY'] = 'secret!'
 
+        
 
 # JWT
 
@@ -33,7 +30,7 @@ app.config["JWT_ALGORITHM"] = "HS256"
 app.config["JWT_COOKIE_SECURE"] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
@@ -64,8 +61,8 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirm = request.form.get("confirm")
-        key = request.form.get("key")
         register_key = app.config["REGISTER_KEY"]
+        rkey = request.form.get("key")
 
         
         # Checking input 
@@ -78,7 +75,7 @@ def register():
             return apology("Please enter both passwords")
         elif password != confirm:
             return apology("Passwords dosent match")
-        elif key == register_key:
+        elif rkey == register_key:
             try:
                 response = table.query(
                     KeyConditionExpression=Key('username').eq(username)
@@ -229,6 +226,29 @@ def dirscan():
                 try:
                     domain = urlCheck(domain)
                     return Response(stream_with_context(dirscanner(domain)))    
+                except Exception as e:
+                    # Something went wrong
+                    return apology("Invalid URL", 403)
+            else:
+                # 403
+                return apology("Invalid URL", 403)
+
+
+
+@app.route('/ipscan',methods=["GET"])
+@jwt_required()
+def ipscan():
+        
+        if request.method == "GET":
+
+            domain = request.args.get('url')
+
+            # Sanitizing URL 
+            if urlCheck(domain) != False:
+
+                try:
+                    domain = urlCheck(domain)
+                    return Response(stream_with_context(ipscanner(domain)))    
                 except Exception as e:
                     # Something went wrong
                     return apology("Invalid URL", 403)

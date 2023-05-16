@@ -1,28 +1,24 @@
 #!/bin/bash
-#? gospider => go install github.com/jaeles-project/gospider@latest
+#dnsx
+#katana
+#naabu
 #? httpx => go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 #? Subfinder => go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-#? Httprobe =>  go install github.com/tomnomnom/httprobe@latest
 #? subzy => go install -v github.com/LukaSikic/subzy@latest
-#? dnstwist => apt dnstwist
-#? intelligenceX => https://github.com/IntelligenceX/SDK
 
 
-#! TRY TO FIND ONE WAY ASYNC TASKS !!!!!
 
-
-# Take input and sanitize #! w\Python
 domain=$1
 
 
-#Create file if its doesnt exist
-#! else return logged folder 
+#Create file if its doesnt exist 
 [ ! -d $domain ] && mkdir history/$domain 2>/dev/null
 
-# Search subdomains #! it must overwrite 
 
-#! if its false return again 
+# This api dosent work stabile 
 #python3 scripts/crt.py $domain && jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
+
+
 subfinder -silent -d $domain > history/$domain/subdomains.txt  
 
 # Request and response subdomains 
