@@ -19,8 +19,10 @@
     
     <!-- https://favicon.io/emoji-favicons/money-bag/ -->
     <link href="/static/favicon.ico" rel="icon">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
-    <title>Portfolio {% block title %}{% endblock %}</title>
+    <title>sahinyes {% block title %}{% endblock %}</title>
 </head>
 
 <body>       
@@ -41,12 +43,32 @@
         </nav>
     </header>
     <main>
-        {% block main %}{% endblock %}
+        <div class="content">
+
+            {% block main %}{% endblock %}
+        </div>
     </main>
+    <div class="loader">
+        <div class='tetrominos'>
+            <div class='tetromino box1'></div>
+            <div class='tetromino box2'></div>
+            <div class='tetromino box3'></div>
+            <div class='tetromino box4'></div>
+          </div>    
+    </div>
     
     <footer class="copyright">
         &copy; 2023 sahinyes
     </footer>
+
+    <script>
+        $(window).on('load',function(){
+            $(".loader").fadeOut(1000);
+            $(".content").fadeIn(1000)
+        })
+    </script>
+
+
 
     <script src="/static/js/main.js"></script>
 </body>
