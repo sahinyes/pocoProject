@@ -561,6 +561,16 @@ p {
 }
 
 
+#animePurple {
+    margin-top: 250px;
+    box-shadow: white 0px 0px;
+    border: white;
+}
+
+
+
+/*  Animation from codepen */
+/* https://codepen.io/imathis/pen/ZYEWrw */
 
 .content {
     display: none;

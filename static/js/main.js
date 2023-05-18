@@ -59,7 +59,6 @@ $(document).ready(function() {
     $('#ipbutton').click(function(event) {
         event.preventDefault();  // Prevent the default form submission
         
-
         // Prompt-like behavior for the iframe source
         var formData = $('#ipbutton').val();       
         var ipbutton = document.getElementById('ipbutton');
@@ -81,3 +80,13 @@ $(document).ready(function() {
     },);
 });
 
+
+document.getElementById('reconbutton').addEventListener('click', function() {
+    	
+    document.getElementById('dashboard').submit();
+    document.getElementById('dashboard').style.display = "none";
+    var img = document.createElement('img');
+    img.src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDdiODIzNmUwMWU1ODAzYzYxMDM5ZTI3NTc0NzYxZDRjNzcwOWI3ZCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/gJ3mEToTDJn3LT6kCT/giphy.gif";
+    img.id = 'animePurple';
+    document.body.appendChild(img);
+  });
