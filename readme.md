@@ -2,7 +2,9 @@
 
 ## Domain Enumeration & Scanning App  
 
-![](https://cdn-images-1.medium.com/max/800/1*o4oLY5BoTPLX-giVn0p6Hg.gif)
+<!-- ![](https://cdn-images-1.medium.com/max/800/1*o4oLY5BoTPLX-giVn0p6Hg.gif) -->
+
+<img src="https://cdn-images-1.medium.com/max/800/1*o4oLY5BoTPLX-giVn0p6Hg.gif" height=400px width=800px>
 
 ## Description
 
