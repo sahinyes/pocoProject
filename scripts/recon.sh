@@ -1,23 +1,12 @@
 #!/bin/bash
-#dnsx
-#katana
-#naabu
-#? httpx => go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-#? Subfinder => go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-#? subzy => go install -v github.com/LukaSikic/subzy@latest
-
-
 
 domain=$1
-
 
 #Create file if its doesnt exist 
 [ ! -d $domain ] && mkdir history/$domain 2>/dev/null
 
-
 # This api dosent work stabile 
 #python3 scripts/crt.py $domain && jq -r 'map(.common_name) | unique[]' > history/$domain/subdomains.txt
-
 
 subfinder -silent -d $domain > history/$domain/subdomains.txt  
 

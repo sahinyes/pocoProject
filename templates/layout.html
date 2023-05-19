@@ -15,34 +15,49 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
+    <!-- jquery ... -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- https://favicon.io/emoji-favicons/money-bag/ -->
     <link href="/static/favicon.ico" rel="icon">
 
+    <!-- cloudflare cdn -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+
+
     <title>sahinyes {% block title %}{% endblock %}</title>
 </head>
 
 <body>       
     <header class="header">
         <!-- Logo -->
-        <a href="index.html" class="logo">sahinyes</a>
+        <a href="index.html" class="logo">sahinyes </a> 
+        <!-- <img id="favicon" src="img/favicon.ico">  -->
         <!-- Hamburger icon -->
         <input class="side-menu" type="checkbox" id="side-menu"/>
         <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
         <!-- Menu -->
         <nav class="nav">
             <ul class="menu">
-                <li><a href="https://sahinyes.com">home</a></li>
-                <li><a href="https://blog.sahinyes.com">blog</a></li>
-                <li><a href="/dashboard">project</a> </li>
-                <li><a href="https://sahinyes.com/infra">infra</a></li>
+                <li><a href="https://sahinyes.com">Home</a></li>
+                <li><a href="https://blog.sahinyes.com">Blog</a></li>
+                <li><a href="/dashboard">Project</a> </li>
+                <li><a href="https://sahinyes.com/infra.html">Infra</a></li>
+            </ul>
+            <ul class="contact">
+                <li><a href="https://www.linkedin.com/in/sahinyes/"><i class="fa fa-2x fa-linkedin" aria-hidden="true" style="color: white;"></i></a></li>
+                <li><a href="mailto: sahin.yesilirmak@powercoders.org"><i class="fa fa-2x fa-envelope-o" aria-hidden="true" style="color: white;"></i></a></li>
+                <li><a href="https://github.com/sahinyes"><i class="fa fa-2x fa-github" aria-hidden="true" style="color: white"></i></a></li>
             </ul>
         </nav>
     </header>
     <main>
+        {% for mesg in get_flashed_messages() %}
+        <div class="alert danger-alert">
+            <h1 id="alarm">{{ mesg }}</h1>
+            <a class="close">&times;</a>
+        </div>
+        {% endfor %}
         <div class="content">
 
             {% block main %}{% endblock %}
@@ -60,6 +75,10 @@
     </main>
     
     <footer class="copyright">
+        <div class="powered">
+            <img id="logodis" src="https://avatars.githubusercontent.com/u/50994705?s=280&v=4">
+            <p>Powered by <a href="https://github.com/projectdiscovery">Project Discovery</a> tools</p>
+        </div>
         &copy; 2023 sahinyes
     </footer>
 
@@ -73,6 +92,13 @@
 
 
     <script src="/static/js/main.js"></script>
+    <script>
+        $(".close").click(function() {
+            $(this)
+              .parent(".alert")
+              .fadeOut();
+        });
+    </script>
 </body>
 
 </html>

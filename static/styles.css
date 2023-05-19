@@ -1,13 +1,10 @@
 /* Theming */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"); /* import font */
 
-
 :root{
     --white: #f9f9f9;
     --gray: #85888C;
 } /* variables*/
-
-
 
 /* Reset */
 *{
@@ -15,36 +12,61 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body{
     background-color: white;
-    font-family: "Poppins", sans-serif;
+    font-family: "Karla", sans-serif;
 }
+
 a{
     text-decoration: none;
 }
+
 ul{
     list-style: none;
 }
 
-
-article {
-    margin-top: 100px;
+.hi{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
 }
 
+
+article {
+    margin-left: 50px; 
+    margin-top: 70px;
+    border-radius: 16px;
+    height: 480px;
+    border-radius: 16px;
+    padding: 0 ;
+}
+
+
 img {
-    max-height: 40vh;
-    max-width: 60vw;
+    max-height: 370px;
+    max-width: 250px;
     border-radius: 15px;
     display: block;
     margin: auto;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
+
 p {
     margin: 10px;
     text-align: center;
+    font-size: 17px;
+}
+
+.fa {
+    margin-right: 20px;
 }
 
 /* Header */
+
 .header{
     background-color: black;
     box-shadow: 1px 1px 5px 0px var(--gray);
@@ -55,11 +77,20 @@ p {
 }
 
 /* Logo */
+
 .logo{
     display: inline-block;
     color: var(--white);
     font-size: 40px;
     margin-left: 10px;
+    font-family: "Poppins";
+}
+
+#favicon {
+    margin-top: 5px;
+    position: relative;
+    width: fit-content;
+    float: right;
 }
 
 /* Nav menu */
@@ -69,18 +100,45 @@ p {
     position: fixed;
     background-color: black;
     overflow: hidden;
+}
+
+.contact {
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    position: absolute;
+    /* bottom: 5rem; */
+    left: 50%;
+    top: 70%;
+    transform: translate(-43%,-50%);
+}
+
+.contact a {
+    color: var(--white);
+    font-size: 23px;
+}
+
+.contact a:hover {
 
 }
+
+
+.menu {
+    margin-top: 50px;
+}
+
 .menu a{
-    display: block;
+    display: flex;
+    justify-content: center;
     padding: 20px 30px 30px 30px;
     color: var(--white);
+    font-size: 20px;
 }
-
 
 .menu li a:hover {
     background-color: white;
     color: black;
+    font-size: 20px;
 }
 
 .nav{
@@ -93,6 +151,7 @@ p {
     cursor: pointer;
     float: right;
     padding: 30px 20px;
+    margin-top: -2.5px;
 }/* Style label tag */
 
 .hamb-line {
@@ -142,7 +201,8 @@ p {
 }
 
 /* Responsiveness */
-@media (min-width: 768px) {
+@media (min-width: 704px) {
+
 .nav{
     max-height: none;
     top: 0;
@@ -151,19 +211,44 @@ p {
     width: fit-content;
     background-color: transparent;
 }
+
+.contact {
+    display: none;
+}
+
+.menu {
+    margin-top: auto;
+    /* top: 0; */
+    /* padding: 0; */
+    /* justify-content: center;
+    align-items: center;
+    text-align: center; */
+}
+
+
+.menu a{
+    display: flex;
+    padding: 20px 30px 30px 30px;
+    color: var(--white);
+    font-size: 20px;
+}
+
 .menu li{
     float: left;
 }
+
 .menu a:hover{
     background-color: transparent;
     color: var(--gray);
-
+    font-size: 20px;
 }
 
 .hamb{
     display: none;
 }
 }
+
+/* Until this line was all sahinyes.com frame */
 
 
 .subTable {
@@ -225,6 +310,7 @@ p {
     left: 0;
     bottom: 0;
     width: 100%;
+    margin-top: 100px;
     text-align: center;
 }
 
@@ -460,6 +546,12 @@ p {
     color: black;
 }
 
+/* Apology */
+
+#apology {
+    margin-top: 300px;
+}
+
 
 #scanbar button {
     border: none;
@@ -664,3 +756,54 @@ p {
    }
 }
 
+#alarm {
+    font-size: 22px;
+    align-items: center;
+    text-align: center;
+}
+
+.alert {
+    width: 50%;
+    margin: 30px auto;
+    padding: 30px;
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 5px #ccc;
+}
+.close {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    opacity: 0.5;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 50%;
+    right: 15px;
+    top: 25px;
+    text-align: center;
+    font-size: 1.6em;
+    cursor: pointer;
+}
+.danger-alert {
+    background-color: #f7a7a3;
+    border-left: 5px solid #8f130c;
+}
+.danger-alert .close {
+    border-color: #8f130c;
+    color: #8f130c;
+}
+
+
+.powered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#logodis {
+    height: 20px;
+    width: 20px;
+    margin: 0;
+    padding: 0;
+}

@@ -8,7 +8,6 @@ domain=$1
 
 # cat ../history/$domain/httpx.json | jq .a[] | tr -d '"' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort | uniq | 
 
-
 echo "################ Scanning for $domain please wait ..."  
 echo $domain | dnsx -silent -resp-only | naabu -silent -nmap-cli 'nmap -sV -v'
 echo "################ Scan finished successfully"

@@ -1,31 +1,27 @@
-import subprocess, json, pdb
-from flask import Flask, redirect, make_response, jsonify, flash, render_template, request, session, Response, stream_with_context
-# from flask_session import Session
+import os, secrets
+from flask import Flask, redirect, make_response, render_template, request, Response, stream_with_context, flash
 import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key, Attr
 from helpers import *
 from werkzeug.security import check_password_hash, generate_password_hash
-import config
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, set_access_cookies
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, set_access_cookies
 from datetime import timedelta
 
 
 
 # Configure applicaiton
 app = Flask(__name__)
+secret_key = secrets.token_hex(18)
+app.secret_key = secret_key
+register_key = os.environ.get('REGISTER_KEY')
 
-app.config.from_object(config)
-app.secret_key = 'your-secret-key'
-
-# Ensure templates are auto-reloaded
+#! Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-# app.config['SECRET_KEY'] = 'secret!'
-
         
 
-# JWT
 
+# JWT Configurations
 app.config["JWT_ALGORITHM"] = "HS256"
 app.config["JWT_COOKIE_SECURE"] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
@@ -33,17 +29,21 @@ app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
-
 jwt = JWTManager(app)
 
-# DB WILL COME HERE
+
+
+# DynamoDB Configurations
 dynamodb = boto3.resource('dynamodb', region_name='eu-central-2')
 table = dynamodb.Table('bloguser')
 
 
+
+# Redirect if visitor not logged in
 @jwt.unauthorized_loader
 def custom_unauthorized_response(_err):
     return redirect("/login")
+
 
 
 @app.route("/")
@@ -51,22 +51,18 @@ def index():
     return render_template("index.html")
 
 
+
 @app.route("/register", methods=["GET","POST"])
-def register():
-    
-    #! Sanitize inputs here also for dynamodb
+def register():   
 
     if request.method == "POST":
 
         username = request.form.get("username")
         password = request.form.get("password")
         confirm = request.form.get("confirm")
-        register_key = app.config["REGISTER_KEY"]
         rkey = request.form.get("key")
-
         
         # Checking input 
-
         if not username:
             return apology("Please enter a username")
         elif not password:
@@ -76,30 +72,13 @@ def register():
         elif password != confirm:
             return apology("Passwords dosent match")
         elif rkey == register_key:
-            try:
-                response = table.query(
-                    KeyConditionExpression=Key('username').eq(username)
-                )
-                items = response['Items']
-                if len(items) > 0:
-                    return apology("Username already exists")
-                table.put_item(
-                    Item={
-                        'username': username,
-                        'password': generate_password_hash(password)
-                    }
-                )
-                msg = "congrats"
-                return render_template("login.html", msg=msg)
-            except:
-                return apology("Username already exists")
+            return register_user(username,password)
         else:
             return apology("Key does not match")
-    
+        
     elif request.method == "GET":
         return render_template("register.html")
 
-    return render_template("register.html")
 
 
 @app.route("/login", methods=["GET","POST"])
@@ -110,51 +89,38 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        #! Verify input check error pages
-        
-        # table = dynamodb.Table('users')
-        result = table.query(
-            KeyConditionExpression=Key('username').eq(username)
-        )
-        items = result['Items']
-        name = items[0]['username']
+        if not username:
+            flash("Please enter a username")
+        elif not password:
+            flash("Please enter a password")
+        elif is_logged_in(username,password) == True:
+            username = sanitize_login_input(username)
 
-        is_verified = check_password_hash(items[0]['password'], password)
-        if is_verified == True:
-
-            access_token = create_access_token(identity=name)
-            #session['access_token_cookie'] = access_token
-
-            response = make_response(redirect('/dashboard'))
-
-            #session['jwt_token'] = access_token
-            set_access_cookies(response, access_token)
-
-            return response
+            try:
+                access_token = create_access_token(identity=username)
+                response = make_response(redirect('/dashboard'))
+                set_access_cookies(response, access_token)
+                return response
             
-            #return render_template("/dashboard.html",name=name)
+            except:
+                return flash("Invalid username or password")
+            
         else:
-            return apology("Invalid username or password")
+            flash("Invalid username or password")
+
     return render_template("login.html")
 
-                
-        #! Sanitize inputs here also for dynamodb
-        
+
 
 @app.route("/dashboard", methods=["GET","POST"])
 @jwt_required()
-
 def dashboard():
-    #  data = get_jwt_identity()
-
-    # current_user = get_jwt_identity()
-     return render_template("dashboard.html")
+    return render_template("dashboard.html")
 
 
-#! Dont forget 'crt.py = none' issue
+
 @app.route("/recon",methods=["POST"])
 @jwt_required()
-
 def recon():
 
     if request.method == "POST":
@@ -169,6 +135,7 @@ def recon():
                 return render_template("recon.html", output=output)
             except:
                 return apology("Invalid domain", 403)
+            
         else:
             return apology("Invalid domain", 403)
         
@@ -191,6 +158,7 @@ def scan():
        return render_template("scan.html",domain=domain)
 
 
+
 @app.route('/vulnscan',methods=["GET"])
 @jwt_required()
 def vulnscan():
@@ -207,9 +175,11 @@ def vulnscan():
                 except:
                     # Something went wrong
                     return apology("Invalid URL", 403)
+                
             else:
-                # 403
+                # urlCheck doesn't allow
                 return apology("Invalid URL", 403)
+
 
 
 @app.route('/dirscan',methods=["GET"])
@@ -229,8 +199,9 @@ def dirscan():
                 except Exception as e:
                     # Something went wrong
                     return apology("Invalid URL", 403)
+                
             else:
-                # 403
+                # It doesn't allow
                 return apology("Invalid URL", 403)
 
 
@@ -252,6 +223,7 @@ def ipscan():
                 except Exception as e:
                     # Something went wrong
                     return apology("Invalid URL", 403)
+                
             else:
-                # 403
+                # It doesn't allow
                 return apology("Invalid URL", 403)
