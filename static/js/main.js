@@ -63,7 +63,7 @@ $(document).ready(function() {
         var formData = $('#ipbutton').val();       
         var ipbutton = document.getElementById('ipbutton');
         var promptElement = document.createElement('p');
-        promptElement.textContent = "Scanning directories for " + formData;
+        promptElement.textContent = "Scanning ports for " + formData;
         document.body.insertBefore(promptElement, iframe);
 
         // Here creating iframes 
