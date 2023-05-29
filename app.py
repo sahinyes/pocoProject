@@ -4,7 +4,6 @@ import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key, Attr
 from helpers import *
-from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, set_access_cookies
 from datetime import timedelta
 
@@ -12,19 +11,17 @@ from datetime import timedelta
 
 # Configure applicaiton
 app = Flask(__name__)
-secret_key = secrets.token_hex(18)
-app.secret_key = secret_key
-register_key = os.environ.get('REGISTER_KEY')
 
-#! Ensure templates are auto-reloaded
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-        
+
+secret_key = os.environ.get('SECRET_KEY')
+register_key = os.environ.get('REGISTER_KEY')
+app.secret_key = secret_key
 
 
 # JWT Configurations
 app.config["JWT_ALGORITHM"] = "HS256"
 app.config["JWT_COOKIE_SECURE"] = False
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_SECRET_KEY'] = secret_key
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
@@ -210,6 +207,7 @@ def dirscan():
 @jwt_required()
 def ipscan():
         
+        
         if request.method == "GET":
 
             domain = request.args.get('url')
@@ -227,3 +225,7 @@ def ipscan():
             else:
                 # It doesn't allow
                 return apology("Invalid URL", 403)
+            
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
